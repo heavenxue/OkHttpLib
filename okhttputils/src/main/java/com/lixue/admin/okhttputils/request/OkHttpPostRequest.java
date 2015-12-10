@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * post请求
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class OkHttpPostRequest extends OkHttpRequest {
     //mediaType, content, bytes, file

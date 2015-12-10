@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 
 /**
  * 响应结果回调
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public abstract class ResultCallBack<T> {
     public Type mType;

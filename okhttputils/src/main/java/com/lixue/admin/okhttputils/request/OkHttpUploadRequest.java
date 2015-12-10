@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * 上传请求
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class OkHttpUploadRequest extends OkHttpPostRequest{
     private Pair<String,File>[] files;

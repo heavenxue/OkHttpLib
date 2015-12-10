@@ -13,7 +13,7 @@ import okio.Sink;
 
 /**
  * 用于计数bytes，多用于上传进度的部分
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class CountingRequestBody extends RequestBody {
     protected RequestBody delegate;

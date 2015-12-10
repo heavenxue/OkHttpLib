@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:name=".MyApplication">
         <activity
-            android:name=".MainActivity"
+            android:name="com.lixue.admin.samples.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

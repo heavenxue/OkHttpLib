@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * 图像请求
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class OkHttpDisplayImgRequest extends OkHttpGetRequest {
     private ImageView imageview;

@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 
 /**
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class ImageUtils {
     /**

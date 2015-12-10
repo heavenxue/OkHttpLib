@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Get请求
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class OkHttpGetRequest extends OkHttpRequest {
     public OkHttpGetRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers) {

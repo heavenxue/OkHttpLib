@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * 下载请求
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class OkHttpDownloadRequest extends OkHttpGetRequest {
     private String destFileDir;

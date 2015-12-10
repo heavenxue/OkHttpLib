@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  *  基础抽象类
  *
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public abstract class OkHttpRequest {
     protected OkHttpClientManager mOkHttpClientManager = OkHttpClientManager.getInstance();
