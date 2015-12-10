@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import okio.Buffer;
 
 /**
- * Created by admin on 2015/12/9.
+ * Created by lixue on 2015/12/9.
  */
 public class MyApplication extends Application {
     private String CER_12306 = "-----BEGIN CERTIFICATE-----\n" +

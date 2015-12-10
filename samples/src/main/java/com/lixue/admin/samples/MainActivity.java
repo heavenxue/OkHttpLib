@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
+//lixue
 public class MainActivity extends AppCompatActivity {
     private TextView mTv;
     private ImageView mImageView;
