@@ -1,28 +1,27 @@
 package com.lixue.admin.samples;
 
+import com.lixue.admin.okhttputils.ABSIO;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by lixue on 2015/12/9.
  */
-public class User {
+public class User extends ABSIO {
 
     public String username ;
     public String password  ;
 
-    public User() {
-        // TODO Auto-generated constructor stub
-    }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    @Override
+    public void readFrom(JSONObject json) throws JSONException {
+        this.username = json.getString("username");
+        this.password = json.getString("password");
     }
 
     @Override
-    public String toString()
-    {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public JSONObject writeTo(JSONObject json) throws JSONException {
+        return null;
     }
 }

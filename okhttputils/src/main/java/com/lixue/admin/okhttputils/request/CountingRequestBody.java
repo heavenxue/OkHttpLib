@@ -12,12 +12,13 @@ import okio.Okio;
 import okio.Sink;
 
 /**
- * 用于计数bytes，多用于上传进度的部分
- * Created by lixue on 2015/12/9.
+ * Created by Administrator on 2015/12/7.
  */
 public class CountingRequestBody extends RequestBody {
+
     protected RequestBody delegate;
     protected Listener listener;
+
     protected CountingSink countingSink;
 
     public CountingRequestBody(RequestBody delegate, Listener listener) {
@@ -38,17 +39,23 @@ public class CountingRequestBody extends RequestBody {
     @Override
     public void writeTo(BufferedSink sink) throws IOException {
         BufferedSink bufferedSink;
+
         countingSink = new CountingSink(sink);
         bufferedSink = Okio.buffer(countingSink);
+
         delegate.writeTo(bufferedSink);
+
         bufferedSink.flush();
     }
 
-    public interface Listener {
-        void onRequestProgress(long bytesWritten, long contentLength);
+    public static interface Listener {
+
+        public void onRequestProgress(long bytesWritten, long contentLength);
+
     }
 
-    protected final class CountingSink extends ForwardingSink{
+    protected final class CountingSink extends ForwardingSink {
+
         private long bytesWritten = 0;
 
         public CountingSink(Sink delegate) {
@@ -57,9 +64,12 @@ public class CountingRequestBody extends RequestBody {
 
         @Override
         public void write(Buffer source, long byteCount) throws IOException {
+            super.write(source, byteCount);
 
             bytesWritten += byteCount;
-            listener.onRequestProgress(bytesWritten,contentLength());
+            listener.onRequestProgress(bytesWritten, contentLength());
         }
+
     }
+
 }

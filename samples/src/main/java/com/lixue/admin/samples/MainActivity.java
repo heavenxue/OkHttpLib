@@ -1,66 +1,65 @@
 package com.lixue.admin.samples;
 
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.lixue.admin.okhttputils.callback.ResultCallBack;
-import com.lixue.admin.okhttputils.request.OkHttpRequest;
+import com.lixue.admin.okhttputils.OkHttpClientManager;
+import com.lixue.admin.okhttputils.callback.BitmapCallback;
+import com.lixue.admin.okhttputils.callback.FileCallback;
+import com.lixue.admin.okhttputils.callback.JsonCallback;
+import com.lixue.admin.okhttputils.callback.StringCallback;
 import com.squareup.okhttp.Request;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+
 //lixue
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "AppCompatActivity";
     private TextView mTv;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
 
-    public abstract class MyResultCallback<T> extends ResultCallBack<T> {
+
+    public class MyStringCallback extends StringCallback {
         @Override
-        public void onBefor() {
-            super.onBefor();
+        public void onBefore(Request request) {
+            super.onBefore(request);
             setTitle("loading...");
         }
 
         @Override
         public void onAfter() {
             super.onAfter();
-            setTitle("Sample-okHttp");
+            setTitle("Sample-OkHttp");
         }
-    }
 
-    private ResultCallBack<String> stringResultCallback = new MyResultCallback<String>() {
         @Override
         public void onError(Request request, Exception e) {
-            Log.e("TAG", "onError , e = " + e.getMessage());
+            mTv.setText("onError:" + e.getMessage());
         }
 
         @Override
         public void onResponse(String response) {
-            Log.e("TAG", "onResponse , response = " + response);
-            mTv.setText("operate success");
+            mTv.setText("onResponse:" + response);
         }
 
         @Override
         public void inProgress(float progress) {
+            super.inProgress(progress);
+            Log.e(TAG, "inProgress:" + progress);
             mProgressBar.setProgress((int) (100 * progress));
         }
-    };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,198 +73,136 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getUser(View view) {
+        String url = "http://cj.weather.com.cn/ajax/citydatasource.aspx?query=%E5%AE%89%E5%BE%BD";
+        OkHttpClientManager.get().url(url).build().execute(new StringCallback() {
+            @Override
+            public void onError(Request request, Exception e) {
 
-        String url = "https://raw.githubusercontent.com/hongyangAndroid/okhttp-utils/master/user.gson";
-//        url = "http://192.168.56.1:8080/test/user.do?action=login&username=fusheng&password=123";
-        new OkHttpRequest.Builder()
-                .url(url)
-                .get(new MyResultCallback<User>() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        Log.e("TAG", "onError , e = " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray Jas = new JSONArray(response);
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < Jas.length(); i++) {
+                        sb.append(Jas.get(i) + "\n");
                     }
-
-                    @Override
-                    public void onResponse(User response) {
-                        Log.e("TAG", "onResponse , user = " + response);
-                        mTv.setText(response.username);
-                    }
-                });
-
-//        new Thread()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                try
-//                {
-//                    User u = new OkHttpRequest.Builder().url(url).get(User.class);
-//                    Log.e("TAG", "syn u = " + u);
-//                } catch (IOException e)
-//                {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }.start();
-
+                    mTv.setText(sb.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
 
     public void getUsers(View view) {
-//        Map<String, String> params = new HashMap<String, String>();
-//        params.put("name", "zhy");
-//        String url = "https://raw.githubusercontent.com/hongyangAndroid/okhttp-utils/master/users.gson";
-//        new OkHttpRequest.Builder().url(url).params(params).post(new MyResultCallback<List<User>>() {
+//        String url = "http://cj.weather.com.cn/ajax/citydatasource.aspx?query=%E5%AE%89%E5%BE%BD";
+//        OkHttpClientManager.get().url(url).build().execute(new StringCallback() {
 //            @Override
 //            public void onError(Request request, Exception e) {
-//                Log.e("TAG", "onError , e = " + e.getMessage());
+//
 //            }
 //
 //            @Override
-//            public void onResponse(List<User> users) {
-//                Log.e("TAG", "onResponse , users = " + users);
-//                mTv.setText(users.get(0).toString());
+//            public void onResponse(String response) {
+//                try {
+//                    JSONArray Jas = new JSONArray(response);
+//                    StringBuilder sb = new StringBuilder();
+//                    for (int i = 0; i < Jas.length(); i++) {
+//                        sb.append(Jas.get(i) + "\n");
+//                    }
+//                    mTv.setText(sb.toString());
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 //            }
 //        });
-//        Map<String,String> params = new HashMap<>();
-//        params.put("uid","12451");
-//        params.put("region","US");
-//        params.put("cfgVersion","0");
-//        params.put("language","EN");
-//        params.put("aid","3000669142");
-//        params.put("clientVersion","3.1.3_global");
-//        params.put("clientType","1");
-        String js = "{'uid:'12451','region':'US','cfgVersion':0,'language':'EN','aid':'3000669142','clientVersion':'3.1.3_global','clientType':1}";
-        String url = "https://pay.halodigit.com/overseas/survey/get";
-        new OkHttpRequest.Builder().url(url).json(js).post(new MyResultCallback<String>() {
+
+        String urls = "https://raw.githubusercontent.com/hongyangAndroid/okhttp-utils/master/users.gson";
+        OkHttpClientManager.get().url(urls).build().execute(new JsonCallback<Users>() {
             @Override
             public void onError(Request request, Exception e) {
 
             }
 
             @Override
-            public void onResponse(String response) {
-                mTv.setText(response);
+            public void onResponse(Users response) {
+                StringBuilder sb = new StringBuilder();
+
+                if (response != null && response.users.length> 0){
+                    for (User muser : response.users){
+                        sb.append("�û���:" + muser.username + ",").append("����:" + muser.password+",");
+                    }
+                }
+                mTv.setText(sb.toString());
             }
+
         });
-
-
     }
 
-    public void getSimpleString(View view) {
-        String url = "https://raw.githubusercontent.com/hongyangAndroid/okhttp-utils/master/user.gson";
-
-        new OkHttpRequest.Builder().url(url)
-                .get(new MyResultCallback<String>() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        Log.e("TAG", "onError , e = " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        mTv.setText(response);
-                    }
-                });
-
-    }
 
     public void getHtml(View view) {
         //https://192.168.56.1:8443/
         //https://kyfw.12306.cn/otn/
         //https://192.168.187.1:8443/
-        String url = "http://www.baidu.com/";
-        new OkHttpRequest.Builder().url(url).get(new MyResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                Log.e("TAG", "onError" + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(String response) {
-                mTv.setText(response);
-            }
-        });
+        String url = "http://www.csdn.net/";
+        OkHttpClientManager.get().url(url).build().execute(new MyStringCallback());
     }
 
     public void getHttpsHtml(View view) {
-        String url = "https://kyfw.12306.cn/otn/";
-        new OkHttpRequest.Builder().url(url).get(new MyResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                Log.e("TAG", "onError" + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(String response) {
-                mTv.setText(response);
-            }
-        });
+        String url ="https://kyfw.12306.cn/otn/";
+        OkHttpClientManager.get().url(url).build().execute(new MyStringCallback());
     }
 
     public void getImage(View view) {
-        String url = "http://images.csdn.net/20150817/1.jpg";
         mTv.setText("");
-        new OkHttpRequest.Builder().url(url).imageView(mImageView).displayImage(null);
-    }
+        String url = "http://images.csdn.net/20150817/1.jpg";
+        OkHttpClientManager.get().url(url).build().execute(new BitmapCallback() {
+            @Override
+            public void onError(Request request, Exception e) {
+                mTv.setText("onError:" + e.getMessage());
+            }
 
-
-    public void uploadFile(View view) {
-//
-//        File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
-//        if (!file.exists()) {
-//            Toast.makeText(MainActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-        Map<String, String> params = new HashMap<>();
-        params.put("username", "张鸿洋");
-        params.put("password", "123");
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("APP-Key", "APP-Secret222");
-        headers.put("APP-Secret", "APP-Secret111");
-
-        String url = "http://192.168.56.1:8080/okHttpServer/fileUpload";
-        new OkHttpRequest.Builder()//
-                .url(url)//
-                .params(params)
-                .headers(headers)
-//                .files(new Pair<String, File>("mFile", file))//
-                .upload(stringResultCallback);
-    }
-
-
-    public void multiFileUpload(View view) {
-        File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
-        File file2 = new File(Environment.getExternalStorageDirectory(), "test1.txt");
-        if (!file.exists()) {
-            Toast.makeText(MainActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Map<String, String> params = new HashMap<>();
-        params.put("username", "张鸿洋");
-        params.put("password", "123");
-
-        String url = "http://192.168.1.103:8080/okHttpServer/mulFileUpload";
-        new OkHttpRequest.Builder()//
-                .url(url)//
-                .params(params)
-                .files(new Pair<String, File>("mFile", file), new Pair<String, File>("mFile", file2))//
-                .upload(stringResultCallback);
-
-
+            @Override
+            public void onResponse(Bitmap response) {
+                mImageView.setImageBitmap(response);
+            }
+        });
     }
 
 
     public void downloadFile(View view) {
         String url = "https://github.com/hongyangAndroid/okhttp-utils/blob/master/gson-2.2.1.jar?raw=true";
-        new OkHttpRequest.Builder()
-                .url(url)
-                .destFileDir(Environment.getExternalStorageDirectory().getAbsolutePath())
-                .destFileName("gson-2.2.1.jar")
-                .download(stringResultCallback);
+        OkHttpClientManager//
+                .get()//
+                .url(url)//
+                .build()//
+                .execute(new FileCallback(Environment.getExternalStorageDirectory().getAbsolutePath(), "gson-2.2.1.jar")//
+                {
+
+                    @Override
+                    public void onBefore(Request request) {
+                        super.onBefore(request);
+                    }
+
+                    @Override
+                    public void inProgress(float progress) {
+                        mProgressBar.setProgress((int) (100 * progress));
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.e(TAG, "onError :" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(File file) {
+                        Log.e(TAG, "onResponse :" + file.getAbsolutePath());
+                    }
+                });
     }
 
     @Override
