@@ -33,10 +33,10 @@ OkHttpLib使用
 
 此封装库需要注意的是，我们在平常编码中用的最多的是json转换为对象，或数组，或List对象，我们没有用Gson的，而是采用反射进行解析的
 用法如下
-[id]: C:\Users\Administrator\Desktop\QQ截图20160303155249.png "Title"
+![image](https://github.com/heavenxue/OkHttpLib/tree/master/screenshorts/1.png)
 
 对应生成的users类要自己生成
-[id]:C:\Users\Administrator\Desktop\QQ截图20160303155517.png
+![image](https://github.com/heavenxue/OkHttpLib/tree/master/screenshorts/2.png)
 
 
 
